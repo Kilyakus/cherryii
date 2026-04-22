@@ -17,8 +17,8 @@ $this->title = Yii::t('cherryii/install', 'Installation completed');
                 </div>
             </div>
             <div class="text-center">
-                <a class="logo" href="http://cherryiicms.com" target="_blank" title="cherryiiCMS homepage">
-                    <img src="<?= $asset->baseUrl ?>/img/logo_20.png">cherryiiCMS
+                <a class="logo" href="http://cherryiicms.com" target="_blank" title="«CherrYii» CMS homepage">
+                    <img src="<?= $asset->baseUrl ?>/img/logo_20.png">«CherrYii» CMS
                 </a>
             </div>
         </div>

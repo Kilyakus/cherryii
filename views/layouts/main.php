@@ -25,7 +25,7 @@ $moduleName = $this->context->module->id;
             <div class="header">
                 <div class="logo">
                     <img src="<?= $asset->baseUrl ?>/img/logo_20.png">
-                    cherryiiCMS
+                    «CherrYii» CMS
                 </div>
                 <div class="nav">
                     <a href="<?= Url::to(['/']) ?>" class="pull-left"><i class="glyphicon glyphicon-home"></i> <?= Yii::t('cherryii', 'Open site') ?></a>

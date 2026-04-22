@@ -17,5 +17,5 @@ return [
     'Installation completed' => 'Установка завершена',
     'Installation error' => 'Ошибка установки',
     'Cannot connect to database. Please configure `{0}`.' => 'Ошибка при подключении к базе данных. Пожалуйста проверьте настройки `{0}`.',
-    'cherryiiCMS is already installed. If you want to reinstall cherryiiCMS, please drop all tables with prefix `cherryii_` from your database manually.' => 'cherryiiCMS уже установлена. Если вы хотите произвести переустановку, удалите все таблицы с префиксом `cherryii_` в вашей базе данных.'
+    '«CherrYii» CMS is already installed. If you want to reinstall «CherrYii», please manually drop all project-related content from your database.' => '«CherrYii» CMS уже установлена. Если вы хотите произвести переустановку, вручную удалите всё содержимое базы данных, связанное с проектом.',
 ];

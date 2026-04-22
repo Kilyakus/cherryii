@@ -335,7 +335,7 @@ class m000000_000000_install extends \yii\db\Migration
         $this->insert(models\Setting::tableName(), [
             'name' => 'cherryii_version',
             'value' => self::VERSION,
-            'title' => 'cherryiiCMS version',
+            'title' => '«CherrYii» CMS version',
             'visibility' => models\Setting::VISIBLE_NONE
         ]);
     }

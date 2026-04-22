@@ -1,4 +1,4 @@
-## cherryiiCMS ##
+## «CherrYii» CMS ##
 
 Control panel and tools based on php framework Yii2. CherrYii — the cherry on top of your website.
 

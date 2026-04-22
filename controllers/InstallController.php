@@ -32,7 +32,7 @@ class InstallController extends \yii\web\Controller
             return $this->showError(Yii::t('cherryii/install', 'Cannot connect to database. Please configure `{0}`.', $configFile));
         }
         if($this->module->installed){
-            return $this->showError(Yii::t('cherryii/install', 'cherryiiCMS is already installed. If you want to reinstall cherryiiCMS, please drop all tables with prefix `cherryii_` from your database manually.'));
+            return $this->showError(Yii::t('cherryii/install', '«CherrYii» CMS is already installed. If you want to reinstall «CherrYii», please manually drop all project-related content from your database.'));
         }
 
         $installForm = new InstallForm();
