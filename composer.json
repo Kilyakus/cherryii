@@ -1,11 +1,11 @@
 {
-    "name": "kilyakus/cms-cherryii-private",
+    "name": "kilyakus/cherryii",
     "version": "dev-master",
     "description": "«CHERRYII» CMS",
     "keywords": ["cherryii"],
     "homepage": "http://cherryiicms.com",
     "type": "yii2-extension",
-    "license": "GNU GPL V3",
+    "license": "CC BY-NC 4.0",
     "minimum-stability": "dev",
     "support": {
         "wiki": "http://cherryiicms.com/docs",
