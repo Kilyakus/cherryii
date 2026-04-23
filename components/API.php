@@ -7,7 +7,7 @@ use Yii;
  * Base API component. Used by all modules
  * @package yii\cherryii\components
  */
-class API extends \yii\base\Object
+class API extends \yii\base\BaseObject
 {
     /** @var  array */
     static $classes;

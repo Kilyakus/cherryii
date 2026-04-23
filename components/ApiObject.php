@@ -8,7 +8,7 @@ use yii\cherryii\helpers\Image;
  * Class ApiObject
  * @package yii\cherryii\components
  */
-class ApiObject extends \yii\base\Object
+class ApiObject extends \yii\base\BaseObject
 {
     /** @var \yii\base\Model  */
     public $model;
