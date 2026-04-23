@@ -20,64 +20,62 @@ $moduleName = $this->context->module->id;
 <body>
 <?php $this->beginBody() ?>
 <div id="admin-body">
-    <div class="container">
-        <div class="wrapper">
-            <div class="header">
-                <div class="logo">
-                    <img src="<?= $asset->baseUrl ?>/img/logo_20.png">
-                    «CherrYii» CMS
-                </div>
-                <div class="nav">
-                    <a href="<?= Url::to(['/']) ?>" class="pull-left"><i class="glyphicon glyphicon-home"></i> <?= Yii::t('cherryii', 'Open site') ?></a>
-                    <a href="<?= Url::to(['/admin/sign/out']) ?>" class="pull-right"><i class="glyphicon glyphicon-log-out"></i> <?= Yii::t('cherryii', 'Logout') ?></a>
-                </div>
+    <div class="wrapper">
+        <div class="header">
+            <div class="logo">
+                <img src="<?= $asset->baseUrl ?>/img/logo_20.png">
+                «CherrYii» CMS
             </div>
-            <div class="main">
-                <div class="box sidebar">
-                    <?php foreach(Yii::$app->getModule('admin')->activeModules as $module) : ?>
-                        <a href="<?= Url::to(["/admin/$module->name"]) ?>" class="menu-item <?= ($moduleName == $module->name ? 'active' : '') ?>">
-                            <?php if($module->icon != '') : ?>
-                                <i class="glyphicon glyphicon-<?= $module->icon ?>"></i>
-                            <?php endif; ?>
-                            <?= $module->title ?>
-                            <?php if($module->notice > 0) : ?>
-                                <span class="badge"><?= $module->notice ?></span>
-                            <?php endif; ?>
-                        </a>
-                    <?php endforeach; ?>
-                    <a href="<?= Url::to(['/admin/settings']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'settings') ? 'active' :'' ?>">
-                        <i class="glyphicon glyphicon-cog"></i>
-                        <?= Yii::t('cherryii', 'Settings') ?>
+            <div class="nav">
+                <a href="<?= Url::to(['/']) ?>" class="pull-left"><i class="glyphicon glyphicon-home"></i> <?= Yii::t('cherryii', 'Open site') ?></a>
+                <a href="<?= Url::to(['/admin/sign/out']) ?>" class="pull-right"><i class="glyphicon glyphicon-log-out"></i> <?= Yii::t('cherryii', 'Logout') ?></a>
+            </div>
+        </div>
+        <div class="main">
+            <div class="box sidebar">
+                <?php foreach(Yii::$app->getModule('admin')->activeModules as $module) : ?>
+                    <a href="<?= Url::to(["/admin/$module->name"]) ?>" class="menu-item <?= ($moduleName == $module->name ? 'active' : '') ?>">
+                        <?php if($module->icon != '') : ?>
+                            <i class="glyphicon glyphicon-<?= $module->icon ?>"></i>
+                        <?php endif; ?>
+                        <?= $module->title ?>
+                        <?php if($module->notice > 0) : ?>
+                            <span class="badge"><?= $module->notice ?></span>
+                        <?php endif; ?>
                     </a>
-                    <?php if(IS_ROOT) : ?>
-                        <a href="<?= Url::to(['/admin/modules']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'modules') ? 'active' :'' ?>">
-                            <i class="glyphicon glyphicon-folder-close"></i>
-                            <?= Yii::t('cherryii', 'Modules') ?>
-                        </a>
-                        <a href="<?= Url::to(['/admin/admins']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'admins') ? 'active' :'' ?>">
-                            <i class="glyphicon glyphicon-user"></i>
-                            <?= Yii::t('cherryii', 'Admins') ?>
-                        </a>
-                        <a href="<?= Url::to(['/admin/system']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'system') ? 'active' :'' ?>">
-                            <i class="glyphicon glyphicon-hdd"></i>
-                            <?= Yii::t('cherryii', 'System') ?>
-                        </a>
-                        <a href="<?= Url::to(['/admin/logs']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'logs') ? 'active' :'' ?>">
-                            <i class="glyphicon glyphicon-align-justify"></i>
-                            <?= Yii::t('cherryii', 'Logs') ?>
-                        </a>
-                    <?php endif; ?>
+                <?php endforeach; ?>
+                <a href="<?= Url::to(['/admin/settings']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'settings') ? 'active' :'' ?>">
+                    <i class="glyphicon glyphicon-cog"></i>
+                    <?= Yii::t('cherryii', 'Settings') ?>
+                </a>
+                <?php if(IS_ROOT) : ?>
+                    <a href="<?= Url::to(['/admin/modules']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'modules') ? 'active' :'' ?>">
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                        <?= Yii::t('cherryii', 'Modules') ?>
+                    </a>
+                    <a href="<?= Url::to(['/admin/admins']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'admins') ? 'active' :'' ?>">
+                        <i class="glyphicon glyphicon-user"></i>
+                        <?= Yii::t('cherryii', 'Admins') ?>
+                    </a>
+                    <a href="<?= Url::to(['/admin/system']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'system') ? 'active' :'' ?>">
+                        <i class="glyphicon glyphicon-hdd"></i>
+                        <?= Yii::t('cherryii', 'System') ?>
+                    </a>
+                    <a href="<?= Url::to(['/admin/logs']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'logs') ? 'active' :'' ?>">
+                        <i class="glyphicon glyphicon-align-justify"></i>
+                        <?= Yii::t('cherryii', 'Logs') ?>
+                    </a>
+                <?php endif; ?>
+            </div>
+            <div class="box content">
+                <div class="page-title">
+                    <?= $this->title ?>
                 </div>
-                <div class="box content">
-                    <div class="page-title">
-                        <?= $this->title ?>
-                    </div>
-                    <div class="container-fluid">
-                        <?php foreach(Yii::$app->session->getAllFlashes() as $key => $message) : ?>
-                            <div class="alert alert-<?= $key ?>"><?= $message ?></div>
-                        <?php endforeach; ?>
-                        <?= $content ?>
-                    </div>
+                <div class="container-fluid">
+                    <?php foreach(Yii::$app->session->getAllFlashes() as $key => $message) : ?>
+                        <div class="alert alert-<?= $key ?>"><?= $message ?></div>
+                    <?php endforeach; ?>
+                    <?= $content ?>
                 </div>
             </div>
         </div>
