@@ -24,9 +24,10 @@
         }
     ],
     "require": {
-        "php": ">=7.4.0",
+        "php": ">=8.0.0",
         "yiisoft/yii2": "~2.0.45",
-        "yiisoft/yii2-bootstrap": "~2.0.0",
+        "yiisoft/yii2-bootstrap5": "~2.0.0",
+        "npm-asset/bootstrap": "5.3.8",
         "yiisoft/yii2-swiftmailer": "~2.1.0",
         "creocoder/yii2-nested-sets": "0.9.*",
         "bower-asset/fancybox": "2.1.5",
