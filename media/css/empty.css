@@ -10,52 +10,40 @@ body {
     text-align: center;
     margin-top: 20px;
     color: #B3B8C3;
+    text-decoration: none;
+    display: block;
 }
 #wrapper .logo:hover{
     color: #fff;
-    text-decoration: none;
 }
 #wrapper .logo img{
     vertical-align: top;
     margin-right: 8px;
 }
-#wrapper .panel-heading{
+
+/* Замена .panel-heading на .card-header */
+#wrapper .card-header{
     font-size: 24px;
     color: #777;
+    background: transparent;
+    border-bottom: none;
+    padding: 20px 20px 0;
 }
+
 #wrapper .vertical-align-parent {
-    -webkit-transform-style: preserve-3d;
-    -moz-transform-style: preserve-3d;
-    transform-style: preserve-3d;
+    display: flex;
+    align-items: center;
+    min-height: 80vh;
 }
-#wrapper .vertical-align-child {
-    position: relative;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-}
-#wrapper .panel {
+
+#wrapper .card {
     border-radius: 0;
+    border: none;
 }
-#wrapper .panel .panel-body {
+#wrapper .card-body {
     padding: 15px 20px;
 }
-#wrapper .tooltip{
-    min-width: 200px;
-}
-#wrapper .tooltip .tooltip-inner{
-    font-size: 12px;
-    text-align: left;
-    padding: 5px 8px 5px 10px;
-    background: #27b6af;
-}
-#wrapper .tooltip .tooltip-arrow{
-    border-right-color: #27b6af;
-}
-#wrapper .panel .recaptcha-tip{
-    margin-bottom: 20px;
-}
+
 #wrapper .btn-primary, #wrapper .btn-primary:focus, #wrapper .btn-primary:active {
     background: #27b6af !important;
     border-radius: 0;

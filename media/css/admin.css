@@ -6,14 +6,13 @@ html{
     background: #f0f3f3;
 }
 #admin-body .wrapper {
-    height: 100%;
-    display: table;
-    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /*--------------- HEADER ---------------*/
 #admin-body .header {
-    display: table-row;
     height: 50px;
     background: #1d212a;
     color: #B3B8C3;
@@ -31,7 +30,6 @@ html{
 }
 #admin-body .header .nav{
     margin-left: 220px;
-    padding-right: 20px;
 }
 #admin-body .header .nav a{
     color: #B3B8C3;
@@ -44,33 +42,29 @@ html{
     margin-right: 5px;
 }
 
-#admin-body .box {
-    display: table-cell;
+/*--------------- MAIN CONTAINER ---------------*/
+.main-container {
+    flex-grow: 1;
 }
 
-/*--------------- LEFT MENU ---------------*/
+/*--------------- SIDEBAR ---------------*/
 #admin-body .sidebar {
     background: #1d212a;
     width: 220px;
     padding: 0;
-    vertical-align: top;
 }
 #admin-body .sidebar a.menu-item{
     border-top: 1px solid #333;
     display: block;
     padding: 15px 20px;
     color: #B3B8C3;
+    text-decoration: none;
 }
 #admin-body .sidebar a.menu-item:hover, #admin-body .sidebar a.menu-item:focus{
-    text-decoration: none;
     color: #FFF;
 }
 #admin-body .sidebar a.active{
     border-color: #27b6af;
-    background: #27b6af;
-    color: #fff;
-}
-#admin-body .sidebar a.active:hover{
     background: #27b6af;
     color: #fff;
 }
@@ -79,29 +73,22 @@ html{
     margin-right: 10px;
 }
 #admin-body .sidebar a.menu-item .badge{
-    background: #fff;
-    color: #555;
     margin-top: 2px;
     float: right;
 }
 
 /*--------------- CONTENT ---------------*/
-#admin-body .main {
-    height: 100%;
-    display: table;
-    width: 100%;
+#admin-body .content {
     background: #fff;
 }
-#admin-body .main .page-title{
+#admin-body .content .page-title{
     font-size: 18px;
     background: #f6f8f8;
     padding: 13px 20px;
+    border-bottom: 1px solid #e7e7e7;
 }
 
-#admin-body .main .container-fluid{
-    padding: 20px;
-}
-#admin-body .main a, #admin-body .main .btn, #admin-body .main .form-control, .input-group-addon{
+#admin-body .content a, #admin-body .content .btn, #admin-body .content .form-control, .input-group-text{
     border-radius: 0 !important;
 }
 
@@ -123,9 +110,6 @@ html{
     vertical-align: middle;
     text-align: center;
 }
-#admin-body .table td.vtop{
-    vertical-align: top;
-}
 
 #admin-body .switcher{
     border: none;
@@ -137,29 +121,8 @@ html{
     border-radius: 10px;
     padding: 1px;
 }
-#admin-body .switcher .slider{
-    background: #f0f3f3;
-    height: 18px;
-    border-radius: 10px;
-    box-shadow: none;
-}
 #admin-body .switcher.is-active{
     background: #27b6af;
-}
-#admin-body .switcher .textNo{
-    color: #fff;
-}
-
-#admin-body .actions li i{
-    margin-right: 8px;
-}
-#admin-body .actions .glyphicon-menu-hamburger{
-    cursor: pointer;
-    font-size: 15px;
-    color: #777;
-}
-#admin-body .actions .glyphicon-menu-hamburger:hover{
-    color: #337ab7;
 }
 
 /*--------------- HELPERS ---------------*/
@@ -170,24 +133,9 @@ h4{
     font-weight: 300;
     color: #555;
 }
-h4 b{
-    font-weight: 400;
-}
 
-.confirm-delete{
-    color: #a94442 !important;
-}
-.color-red{
-    color: #a94442;
-}
-.font-16 {
-    font-size: 16px;
-}
-.font-12 {
-    font-size: 12px;
-}
-.font-10 {
-    font-size: 10px;
+.confirm-delete, .color-red{
+    color: #dc3545;
 }
 
 #notify-alert {
@@ -196,20 +144,11 @@ h4 b{
     top: 50px;
     right: 10px;
     width: 300px;
-}
-.smooth {
-    color: #aaa;
+    z-index: 9999;
 }
 .dashed-link:before{
-    font-family: 'Glyphicons Halflings';
-    content: "\e252";
+    font-family: "bootstrap-icons";
+    content: "\F312"; /* bi-dash */
     font-size: 10px;
     margin-right: 4px;
-}
-.dashed-link.collapsed:before{
-    content: "\e250";
-}
-.dashed-link:hover, .dashed-link:focus{
-    text-decoration: none;
-    color: #333;
 }
