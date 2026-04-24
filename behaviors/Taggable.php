@@ -8,7 +8,8 @@ use yii\cherryii\models\TagAssign;
 
 class Taggable extends \yii\base\Behavior
 {
-    private $_tags;
+    // PHP 8.0 требует инициализации массива, чтобы избежать TypeError в count()
+    private $_tags = [];
 
     public function events()
     {
@@ -41,7 +42,7 @@ class Taggable extends \yii\base\Behavior
 
     public function getTagsArray()
     {
-        if($this->_tags === null){
+        if($this->_tags === null || (is_array($this->_tags) && empty($this->_tags))){
             $this->_tags = [];
             foreach($this->owner->tags as $tag) {
                 $this->_tags[] = $tag->name;
@@ -56,8 +57,10 @@ class Taggable extends \yii\base\Behavior
             $this->beforeDelete();
         }
 
-        if(count($this->_tags)) {
+        // Исправлено: добавлена проверка is_array для предотвращения TypeError в PHP 8.0
+        if(is_array($this->_tags) && count($this->_tags)) {
             $tagAssigns = [];
+            $updatedTags = [];
             $modelClass = get_class($this->owner);
 
             foreach ($this->_tags as $name) {
@@ -67,7 +70,7 @@ class Taggable extends \yii\base\Behavior
                 $tag->frequency++;
                 if ($tag->save()) {
                     $updatedTags[] = $tag;
-                    $tagAssigns[] = [$modelClass, $this->owner->primaryKey, $tag->tag_id];
+                    $tagAssigns[] = [$modelClass, $this->owner->primaryKey[0], $tag->tag_id];
                 }
             }
 
