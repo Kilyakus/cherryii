@@ -19,77 +19,108 @@ $moduleName = $this->context->module->id;
     <link rel="icon" href="<?= $asset->baseUrl ?>/favicon.ico" type="image/x-icon">
     <?php $this->head() ?>
 </head>
-<body>
+<body class="vh-100 overflow-hidden d-flex flex-column bg-black">
 <?php $this->beginBody() ?>
-<div id="admin-body">
-    <div class="wrapper">
-        <div class="header clearfix">
-            <div class="logo">
-                <img src="<?= $asset->baseUrl ?>/img/logo_20.png">
-                «CherrYii» CMS
-            </div>
-            <div class="nav px-3">
-                <a href="<?= Url::to(['/']) ?>" class="float-start text-decoration-none">
-                    <i class="bi bi-house"></i> <?= Yii::t('cherryii', 'Open site') ?>
-                </a>
-                <a href="<?= Url::to(['/admin/sign/out']) ?>" class="float-end text-decoration-none">
-                    <i class="bi bi-box-arrow-right"></i> <?= Yii::t('cherryii', 'Logout') ?>
-                </a>
-            </div>
+
+<div id="dynamic-background"></div>
+
+<div class="app-container d-flex flex-column h-100 w-100 position-relative">
+    
+    <header class="glass-panel d-flex justify-content-between align-items-center px-4" 
+            style="min-height: 70px; border-top:0; border-right:0; border-left:0; border-radius:0;">
+        <div class="d-flex align-items-center gap-3">
+            <img src="<?= $asset->baseUrl ?>/img/logo_20.png" alt="Logo">
+            <h1 class="m-0 fs-5 uppercase-text fw-bold tracking-wider text-white">«CherrYii» CMS</h1>
         </div>
-        <div class="main-container d-flex">
-            <div class="sidebar flex-shrink-0">
-                <?php foreach(Yii::$app->getModule('admin')->activeModules as $module) : ?>
-                    <a href="<?= Url::to(["/admin/$module->name"]) ?>" class="menu-item <?= ($moduleName == $module->name ? 'active' : '') ?>">
-                        <?php if($module->icon != '') : ?>
-                            <i class="bi bi-<?= $module->icon ?>"></i>
-                        <?php endif; ?>
-                        <?= $module->title ?>
-                        <?php if($module->notice > 0) : ?>
-                            <span class="badge rounded-pill bg-light text-dark"><?= $module->notice ?></span>
-                        <?php endif; ?>
+
+        <div class="d-flex align-items-center gap-4">
+            <a href="<?= Url::to(['/']) ?>" class="text-decoration-none text-white opacity-75 custom-hover">
+                <i class="bi bi-house"></i> <?= Yii::t('cherryii', 'Open site') ?>
+            </a>
+            <a href="<?= Url::to(['/admin/sign/out']) ?>" class="text-decoration-none text-white opacity-75 custom-hover">
+                <i class="bi bi-box-arrow-right"></i> <?= Yii::t('cherryii', 'Logout') ?>
+            </a>
+        </div>
+    </header>
+
+    <main class="flex-grow-1 overflow-hidden d-flex px-4 gap-4">
+        
+        <aside id="sidebar" class="h-100 py-4" style="width: 280px; min-width: 280px;">
+            <div class="sidebar-inner glass-panel h-100 d-flex flex-column overflow-hidden">
+                <div class="flex-grow-1 overflow-y-auto p-3 d-flex flex-column gap-2" id="categories-scroll-area">
+                    
+                    <?php foreach(Yii::$app->getModule('admin')->activeModules as $module) : ?>
+                        <a href="<?= Url::to(["/admin/$module->name"]) ?>" 
+                           class="menu-item text-white text-decoration-none p-2 rounded d-flex align-items-center <?= ($moduleName == $module->name ? 'bg-primary bg-opacity-25 border border-primary' : '') ?>">
+                            <?php if($module->icon != '') : ?>
+                                <i class="bi bi-<?= $module->icon ?> me-2 opacity-75"></i>
+                            <?php endif; ?>
+                            <span class="flex-grow-1"><?= $module->title ?></span>
+                            <?php if($module->notice > 0) : ?>
+                                <span class="badge rounded-pill bg-light text-dark ms-2"><?= $module->notice ?></span>
+                            <?php endif; ?>
+                        </a>
+                    <?php endforeach; ?>
+                    
+                    <hr class="border-secondary opacity-25 my-2">
+                    
+                    <a href="<?= Url::to(['/admin/settings']) ?>" 
+                       class="menu-item text-white text-decoration-none p-2 rounded d-flex align-items-center <?= ($moduleName == 'admin' && $this->context->id == 'settings') ? 'bg-primary bg-opacity-25 border border-primary' :'' ?>">
+                        <i class="bi bi-gear me-2 opacity-75"></i>
+                        <span class="flex-grow-1"><?= Yii::t('cherryii', 'Settings') ?></span>
                     </a>
-                <?php endforeach; ?>
-                <a href="<?= Url::to(['/admin/settings']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'settings') ? 'active' :'' ?>">
-                    <i class="bi bi-gear"></i>
-                    <?= Yii::t('cherryii', 'Settings') ?>
-                </a>
-                <?php if(IS_ROOT) : ?>
-                    <a href="<?= Url::to(['/admin/modules']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'modules') ? 'active' :'' ?>">
-                        <i class="bi bi-folder"></i>
-                        <?= Yii::t('cherryii', 'Modules') ?>
-                    </a>
-                    <a href="<?= Url::to(['/admin/admins']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'admins') ? 'active' :'' ?>">
-                        <i class="bi bi-people"></i>
-                        <?= Yii::t('cherryii', 'Admins') ?>
-                    </a>
-                    <a href="<?= Url::to(['/admin/system']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'system') ? 'active' :'' ?>">
-                        <i class="bi bi-hdd-network"></i>
-                        <?= Yii::t('cherryii', 'System') ?>
-                    </a>
-                    <a href="<?= Url::to(['/admin/logs']) ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'logs') ? 'active' :'' ?>">
-                        <i class="bi bi-list-check"></i>
-                        <?= Yii::t('cherryii', 'Logs') ?>
-                    </a>
-                <?php endif; ?>
-            </div>
-            <div class="content w-100">
-                <div class="page-title">
-                    <?= $this->title ?>
+                    
+                    <?php if(IS_ROOT) : ?>
+                        <a href="<?= Url::to(['/admin/modules']) ?>" 
+                           class="menu-item text-white text-decoration-none p-2 rounded d-flex align-items-center <?= ($moduleName == 'admin' && $this->context->id == 'modules') ? 'bg-primary bg-opacity-25 border border-primary' :'' ?>">
+                            <i class="bi bi-folder me-2 opacity-75"></i>
+                            <span class="flex-grow-1"><?= Yii::t('cherryii', 'Modules') ?></span>
+                        </a>
+                        <a href="<?= Url::to(['/admin/admins']) ?>" 
+                           class="menu-item text-white text-decoration-none p-2 rounded d-flex align-items-center <?= ($moduleName == 'admin' && $this->context->id == 'admins') ? 'bg-primary bg-opacity-25 border border-primary' :'' ?>">
+                            <i class="bi bi-people me-2 opacity-75"></i>
+                            <span class="flex-grow-1"><?= Yii::t('cherryii', 'Admins') ?></span>
+                        </a>
+                        <a href="<?= Url::to(['/admin/system']) ?>" 
+                           class="menu-item text-white text-decoration-none p-2 rounded d-flex align-items-center <?= ($moduleName == 'admin' && $this->context->id == 'system') ? 'bg-primary bg-opacity-25 border border-primary' :'' ?>">
+                            <i class="bi bi-hdd-network me-2 opacity-75"></i>
+                            <span class="flex-grow-1"><?= Yii::t('cherryii', 'System') ?></span>
+                        </a>
+                        <a href="<?= Url::to(['/admin/logs']) ?>" 
+                           class="menu-item text-white text-decoration-none p-2 rounded d-flex align-items-center <?= ($moduleName == 'admin' && $this->context->id == 'logs') ? 'bg-primary bg-opacity-25 border border-primary' :'' ?>">
+                            <i class="bi bi-list-check me-2 opacity-75"></i>
+                            <span class="flex-grow-1"><?= Yii::t('cherryii', 'Logs') ?></span>
+                        </a>
+                    <?php endif; ?>
+
                 </div>
-                <div class="container-fluid py-4">
+            </div>
+        </aside>
+
+        <section id="content" class="flex-grow-1 h-100 overflow-hidden">
+            <div id="file-list-container" class="h-100 overflow-y-auto py-4">
+                
+                <div class="glass-panel p-4 min-vh-100">
+                    <h2 class="text-white mb-4 fw-light opacity-75"><?= Html::encode($this->title) ?></h2>
+                    
                     <?php foreach(Yii::$app->session->getAllFlashes() as $key => $message) : ?>
-                        <div class="alert alert-<?= $key ?> alert-dismissible fade show" role="alert">
+                        <div class="alert alert-<?= $key ?> alert-dismissible fade show shadow-sm" role="alert">
                             <?= $message ?>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     <?php endforeach; ?>
-                    <?= $content ?>
+                    
+                    <div class="text-white">
+                        <?= $content ?>
+                    </div>
                 </div>
+
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
+
 </div>
+
 <?php $this->endBody() ?>
 </body>
 </html>

@@ -1,154 +1,819 @@
-html{
-    overflow-y: scroll;
-}
-#admin-body{
-    font-family: 'Open Sans', sans-serif;
-    background: #f0f3f3;
-}
-#admin-body .wrapper {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+/* --- Библиотека цветов и переменных (Без изменений) --- */
+:root {
+    --status-pending-color: #00d4ff;
+    --status-active-color: #ffa500;
+    --status-success-color: #00ff00;
+    --status-error-color: #ff4d4d;
+    
+    --status-pending-glow: rgba(0, 212, 255, 0.4);
+    --status-active-glow: rgba(255, 165, 0, 0.4);
+    --status-success-glow: rgba(0, 255, 0, 0.4);
+    --status-error-glow: rgba(255, 77, 77, 0.4);
+
+    --color-primary: var(--status-active-color);
+    --color-success: var(--status-success-color);
+    --color-danger:  var(--status-error-color);
+    --color-waiting: var(--status-pending-color);
+    
+    --color-bg-dark: #1a1a40;
+    --color-text-main: #ffffff;
+    --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-/*--------------- HEADER ---------------*/
-#admin-body .header {
-    height: 50px;
-    background: #1d212a;
-    color: #B3B8C3;
-    line-height: 50px;
-}
-#admin-body .header .logo{
-    float: left;
-    width: 220px;
-    text-align: center;
-    font-size: 18px;
-    color: #FFF;
-}
-#admin-body .header .logo img{
-    vertical-align: baseline;
-}
-#admin-body .header .nav{
-    margin-left: 220px;
-}
-#admin-body .header .nav a{
-    color: #B3B8C3;
-}
-#admin-body .header .nav a:hover, #admin-body .header .nav a:focus, #admin-body .header .nav a:active{
-    color: #fff;
-    text-decoration: none;
-}
-#admin-body .header .nav a i{
-    margin-right: 5px;
-}
-
-/*--------------- MAIN CONTAINER ---------------*/
-.main-container {
-    flex-grow: 1;
-}
-
-/*--------------- SIDEBAR ---------------*/
-#admin-body .sidebar {
-    background: #1d212a;
-    width: 220px;
+/* --- Базовые настройки отображения --- */
+html, body {
+    margin: 0;
     padding: 0;
+    height: 100vh;
+    width: 100vw;
+    background: radial-gradient(circle at center, var(--color-bg-dark) 0%, #000 100%);
+    color: var(--color-text-main);
+    font-family: var(--font-main);
+    -webkit-user-select: none;
+    user-select: none;
+    overflow: hidden; /* Строгое ограничение под экран */
+	box-shadow: inset 0 0 22px rgba(70,70,70,0.25);
 }
-#admin-body .sidebar a.menu-item{
-    border-top: 1px solid #333;
-    display: block;
-    padding: 15px 20px;
-    color: #B3B8C3;
-    text-decoration: none;
+
+.color-primary { color: var(--color-primary); }
+.uppercase-text { text-transform: uppercase; letter-spacing: 2px; }
+
+input::placeholder { color: rgba(255, 255, 255, 0.6)!important; }
+
+/* --- Кнопки управления окном --- */
+.window-controls {
+    display: flex;
+    gap: 8px;
+    -webkit-app-region: no-drag;
 }
-#admin-body .sidebar a.menu-item:hover, #admin-body .sidebar a.menu-item:focus{
-    color: #FFF;
+
+.win-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.2s ease;
 }
-#admin-body .sidebar a.active{
-    border-color: #27b6af;
-    background: #27b6af;
+
+.win-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+.win-btn.close:hover {
+    background: #ff4d4d;
+    border-color: #ff4d4d;
+}
+
+/* Делаем хедер перетаскиваемым, но разрешаем клики по элементам внутри */
+header {
+    -webkit-app-region: drag;
+}
+
+header h1, 
+header .header-menu, 
+header .window-controls,
+header .search-box,
+.view-box{
+    -webkit-app-region: no-drag;
+}
+
+/* --- Элементы Header --- */
+.menu-btn {
+    padding: 8px 18px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.menu-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--color-primary) !important;
+}
+
+/* --- Sidebar & Категории (Обновлено) --- */
+.add-cat-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-primary);
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.add-cat-btn:hover {
+    background: var(--color-primary);
+    color: #000;
+    transform: scale(1.1);
+}
+
+#categories-tree li {
+    padding: 10px 12px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#categories-tree li:hover {
+    background: rgba(255, 255, 255, 0.05);
     color: #fff;
 }
 
-#admin-body .sidebar a.menu-item i{
-    margin-right: 10px;
-}
-#admin-body .sidebar a.menu-item .badge{
-    margin-top: 2px;
-    float: right;
+#categories-tree li.active {
+    background: var(--color-primary);
+    color: #000;
+    font-weight: 600;
 }
 
-/*--------------- CONTENT ---------------*/
-#admin-body .content {
-    background: #fff;
-}
-#admin-body .content .page-title{
-    font-size: 18px;
-    background: #f6f8f8;
-    padding: 13px 20px;
-    border-bottom: 1px solid #e7e7e7;
+/* Контейнер для правой части (badge/actions) */
+.right-side {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 45px;
 }
 
-#admin-body .content a, #admin-body .content .btn, #admin-body .content .form-control, .input-group-text{
-    border-radius: 0 !important;
+.item-actions {
+    display: none; /* По умолчанию скрыты */
+    gap: 8px;
 }
 
-#admin-body .table {
-    table-layout: fixed;
-}
-#admin-body .table th{
-    font-size: 14px;
-    color: #565656;
-}
-#admin-body .table td{
-    font-size: 14px;
-}
-#admin-body .table td.control{
-    vertical-align: middle;
-    text-align: right;
-}
-#admin-body .table td.status{
-    vertical-align: middle;
-    text-align: center;
-}
-
-#admin-body .switcher{
-    border: none;
-    background: #b3b8c3;
-    color: #FFF;
-    height: 20px;
-    min-width: 40px;
-    font-size: 11px;
-    border-radius: 10px;
-    padding: 1px;
-}
-#admin-body .switcher.is-active{
-    background: #27b6af;
-}
-
-/*--------------- HELPERS ---------------*/
-
-h4{
-    text-transform: uppercase;
-    font-size: 24px;
-    font-weight: 300;
-    color: #555;
-}
-
-.confirm-delete, .color-red{
-    color: #dc3545;
-}
-
-#notify-alert {
+/* Логика замены Badge на Кнопки при наведении */
+#categories-tree li:hover .category-badge {
     display: none;
-    position: fixed;
-    top: 50px;
-    right: 10px;
-    width: 300px;
-    z-index: 9999;
 }
-.dashed-link:before{
-    font-family: "bootstrap-icons";
-    content: "\F312"; /* bi-dash */
+
+#categories-tree li:hover .item-actions {
+    display: flex;
+}
+
+/* В активном состоянии кнопки тоже должны быть видны при наведении, 
+   но иконки лучше сделать темными для контраста */
+#categories-tree li.active:hover .action-btn {
+    color: #000;
+}
+
+/* --- File Card (Карточки медиа) --- */
+.file-card {
+    position: relative;
+    padding: 10px;
+    text-align: center;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    cursor: default;
+}
+
+.file-card:hover {
+    border-color: var(--status-pending-color) !important;
+    transform: translateY(-5px);
+}
+
+.file-actions {
+    position: absolute;
+    top: 15px;
+    right:0;
+    width: 100%;
+    padding: 0px 15px;
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+.file-card:hover .file-actions {
+    opacity: 1;
+}
+
+.file-action-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 11px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.file-action-btn.pen:hover {
+    background: var(--color-primary);
+    color: #000;
+}
+
+.file-action-btn.del:hover {
+    background: var(--status-error-color);
+}
+
+.file-card img, 
+.file-card video,
+.aspect-ratio-16-9 {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+}
+
+.file-card img, 
+.file-card video {
+    height: 100%;
+    border-radius: 8px;
+}
+
+.file-name {
+    font-size: 13px;
+    font-weight: 500;
+    margin: 8px 0px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* --- Поиск и подсказки --- */
+input#tag-search { 
+    width: 100%; 
+    padding: 12px; 
+    border-radius: 12px; 
+    background: rgba(255, 255, 255, 0.07); /* Сделали чуть светлее фон */
+    border: 1px solid rgba(255, 255, 255, 0.15)!important; 
+    color: white;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* Настройка цвета плейсхолдера для разных браузеров */
+input#tag-search::placeholder {
+    opacity: 1; /* Важно для Firefox */
+}
+
+input#tag-search:focus { 
+    border-color: var(--status-pending-color)!important; 
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+}
+
+/* Улучшение видимости иконок в поиске, если они есть рядом */
+.search-box i {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+#tag-suggestions {
+    z-index: 1050;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+#tag-suggestions div {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 13px;
+    color: white;
+}
+
+#tag-suggestions div:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-primary);
+}
+
+/* --- Vendor: SimpleBar Customization --- */
+/* Контейнер вертикальной дорожки скролла */
+.view-scroll-track.view-scroll-vertical {
+    right: -3px;
+}
+
+#categories-scroll-area .view-scroll-track.view-scroll-vertical {bottom: 15px!important;}
+#file-list-container .view-scroll-track.view-scroll-vertical {bottom: 22px!important;}
+
+#file-list-container .view-scroll-track.view-scroll-vertical {
+	top: 1.5rem;
+}
+
+/* Настройка самого ползунка (опционально, для лучшей видимости) */
+.view-scroll-scrollbar::before { 
+    background-color: rgba(255, 255, 255, 0.85) !important; 
+    opacity: 0.3 !important; 
+    border-radius: 4px;
+}
+.view-scroll-vertical .view-scroll-scrollbar::before {
+    width: 4px; 
+}
+.view-scroll-horizontal .view-scroll-scrollbar::before {
+    height: 4px; 
+}
+.view-scroll-scrollbar.view-scroll-visible::before { opacity: 0.7!important; }
+.view-scroll-wrapper { overflow-x: hidden !important; }
+
+.view-scroll-content-wrapper:focus-visible { outline: none; }
+
+/* Рамка выделения (Rubber Band) */
+#selection-box {
+    position: absolute;
+    background: rgba(0, 212, 255, 0.15);
+    border: 1px solid var(--status-pending-color);
+    z-index: 9999;
+    pointer-events: none;
+}
+
+/* Активное состояние карточки */
+.file-card.selected {
+    border-color: var(--status-pending-color) !important;
+    box-shadow: 0 0 15px var(--status-pending-glow) !important;
+    background: rgba(0, 212, 255, 0.1) !important;
+}
+
+/* Прицел над категорией при перетаскивании */
+#categories-tree li.drag-hover {
+    background: rgba(var(--bs-primary-rgb), 0.2) !important;
+    border-left: 4px solid var(--status-active-color) !important;
+    padding-left: 15px;
+}
+
+/* Кастомный призрак при перетаскивании */
+.drag-ghost {
+    background: var(--color-primary);
+    color: #000;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 12px;
+    position: absolute;
+    top: -1000px;
+}
+
+.tag-badge {
     font-size: 10px;
-    margin-right: 4px;
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--status-pending-color);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.tag-badge:hover {
+    background: var(--status-pending-color);
+    color: #000;
+}
+
+ /* 1. Системные теги (Красные) */
+.tag-badge.system-tag {
+    background: rgba(255, 68, 68, 0.2);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+.tag-badge.system-tag:hover {
+    background: rgba(255, 68, 68, 0.3);
+    border-color: #ff6b6b;
+}
+
+/* 2. Пользовательские теги (Голубые) */
+.tag-badge.user-tag {
+    background: rgba(0, 191, 255, 0.2);
+    color: #00d4ff;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+.tag-badge.user-tag:hover {
+    background: rgba(0, 191, 255, 0.3);
+    border-color: #00d4ff;
+}
+
+/* 3. Теги категории (Белые) */
+.tag-badge.category-tag {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.tag-badge.category-tag:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #ffffff;
+}
+
+/* Контейнер для пути */
+.path-container {
+    display: flex;
+    max-width: 300px; 
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Начало пути (диск и точки) — всегда видно */
+.path-start {
+    flex-shrink: 0;
+}
+
+/* Конец пути (папка и файл) — сжимается с многоточием в начале */
+.path-end {
+    direction: rtl; 
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+}
+
+.loading-card {
+    opacity: 0.52;
+}
+
+.loading-card .aspect-ratio-16-9 {
+    border-radius:6px;
+}
+
+/* Файл: assets/css/glass.css */
+
+/* Базовый стеклянный панель */
+.glass-panel {
+	background: rgba(255, 255, 255, 0.03);
+	backdrop-filter: blur(15px);
+	-webkit-backdrop-filter: blur(15px);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
+}
+
+/* ── Вариации цвета стекла ──────────────────────────────────────────────── */
+
+/* --- INFO / BLUE --- */
+.glass-panel.bg-info {
+    background: rgba(0, 191, 255, 0.2) !important;
+    color: #00d4ff !important;
+    border: 1px solid rgba(0, 212, 255, 0.3) !important;
+}
+
+/* --- SUCCESS / GREEN --- */
+.glass-panel.bg-success {
+    background: rgba(0, 255, 0, 0.08) !important;
+    color: #4dfd4d !important;
+    border: 1px solid rgba(77, 253, 77, 0.25) !important;
+}
+
+/* --- WARNING / YELLOW --- */
+.glass-panel.bg-warning {
+    background: rgba(255, 193, 7, 0.12) !important;
+    color: #ffca2c !important;
+    border: 1px solid rgba(255, 202, 44, 0.3) !important;
+}
+
+/* --- DANGER / RED --- */
+.glass-panel.bg-danger {
+    background: rgba(255, 68, 68, 0.2) !important;
+    color: #ff6b6b !important;
+    border: 1px solid rgba(255, 107, 107, 0.3) !important;
+}
+
+/* --- PRIMARY / ORANGE --- */
+.glass-panel.bg-primary {
+    background: rgba(255, 165, 0, 0.08) !important;
+    color: #ffa500 !important;
+    border: 1px solid rgba(255, 165, 0, 0.25) !important;
+}
+
+/* ──────────────────────────── */
+
+header.glass-panel {
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+}
+header.glass-panel:before {
+	content:'';
+	width:100%;
+	height:100%;
+	position: absolute;
+	top:0;
+	left:0;
+	z-index: -1;
+	border-radius: inherit;
+	backdrop-filter: blur(50px);
+	-webkit-backdrop-filter: blur(50px);
+}
+
+.glass-panel.glass-dark {
+	background: rgba(0, 0, 0, 0.85);
+}
+
+/* Улучшение инпутов внутри модальных окон */
+.modal-content input.form-control {
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	color: white;
+}
+
+.modal-content input.form-control:focus {
+	background: rgba(255, 255, 255, 0.1);
+	border-color: var(--color-primary);
+	box-shadow: 0 0 10px rgba(255, 165, 0, 0.2);
+}
+
+.modal-backdrop {
+	backdrop-filter: blur(5px);
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Стеклянный эффект для модального окна */
+.modal-content.glass-panel {
+	background: rgba(20, 20, 25, 0.8) !important;
+	backdrop-filter: blur(50px) !important;
+	-webkit-backdrop-filter: blur(50px) !important;
+	border: 1px solid rgba(255, 255, 255, 0.1) !important;
+	color: #fff;
+}
+
+.modal-content.glass-panel .modal-title {color: rgba(255, 255, 255, 0.7);}
+
+/* Убираем возможное обрезание в хедере */
+header.glass-panel {
+	position: relative;
+	z-index: 1000;
+	overflow: visible !important; /* Важно, чтобы меню выпадало за границы хедера */
+	/* Добавляем изоляцию, чтобы дочерние фильтры не смешивались с родительским */
+	/* isolation: isolate; */
+}
+
+/* Фикс для того, чтобы стеклянный эффект не конфликтовал с позиционированием */
+.dropdown {
+	position: relative;
+	height: 100%;
+	display: flex;
+}
+
+/* Исправление отображения выпадающего меню */
+.dropdown-menu {
+	z-index: 2000 !important;
+	margin-top: 1px !important;
+	border-radius: 0 0 12px 12px;
+	
+	/* КЛЮЧЕВОЕ РЕШЕНИЕ: */
+	/* Используем более темный фон и форсируем аппаратное ускорение */
+	background: rgba(15, 15, 20, 0.1) !important; 
+	backdrop-filter: blur(25px) saturate(150%) !important;
+	-webkit-backdrop-filter: blur(25px) saturate(150%) !important;
+	
+	/* Убираем влияние трансформаций родителя */
+	transform: translateZ(1px); 
+	border: 1px solid rgba(255, 255, 255, 0.1) !important;
+	border-top: none !important; /* Чтобы не было двойной полоски под хедером */
+}
+
+/* Стилизация пунктов меню для соответствия стеклянному дизайну */
+.dropdown-item {
+	transition: all 0.2s ease;
+	border-radius: 8px;
+	margin: 0 4px;
+	width: calc(100% - 8px);
+	color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.dropdown-item:hover {
+	background: rgba(255, 255, 255, 0.1) !important;
+	color: var(--color-primary) !important;
+}
+
+.dropdown-item:active {
+	background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* ==========================================================================
+   Стеклянные таблицы Bootstrap — адаптивная версия
+   ========================================================================== */
+
+.table {
+    --table-bg: rgba(20, 20, 25, 0.45);
+    --table-accent-bg: rgba(255, 255, 255, 0.05);
+    --table-hover-bg: rgba(255, 165, 0, 0.14);
+    --table-active-bg: rgba(255, 165, 0, 0.24);
+    --table-border-color: rgba(255, 255, 255, 0.09);
+    --table-color: rgba(255, 255, 255, 0.94);
+    --table-head-bg: rgba(30, 30, 40, 0.82);
+    --table-head-color: rgba(255, 255, 255, 0.97);
+
+    color: var(--table-color);
+    background: var(--table-bg) !important; /* Фон самой таблицы */
+    backdrop-filter: blur(14px) saturate(130%);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
+    border-collapse: collapse;
+    overflow: hidden;
+}
+
+/* Базовые ячейки */
+.table tbody td,
+.table tbody th {
+    background-color: transparent;
+    border-bottom: 1px solid var(--table-border-color); /* Стандартная граница */
+    padding: 0.82rem 1.1rem;
+    color: inherit;
+    /* Убрали принудительный middle, теперь работает align-top из Bootstrap */
+}
+
+/* Убираем границы, если добавлен класс .table-borderless */
+.table.table-borderless tbody td,
+.table.table-borderless tbody th,
+.table.table-borderless thead th {
+    border: 0 !important;
+}
+
+/* Эффект Hover и Активная строка (всегда подсвечена) */
+.table.table-hover tbody tr:hover > *,
+.table tbody tr.table-active-row > * {
+    background: var(--table-hover-bg) !important;
+    transition: background 0.18s ease;
+}
+
+/* Дополнительный акцент для активной строки (опционально - чуть ярче текст) */
+.table tbody tr.table-active-row {
+    --table-color: #ffffff;
+}
+
+/* Заголовок */
+.table thead th {
+    background: var(--table-head-bg);
+    color: var(--table-head-color);
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    padding: 0.82rem 1.1rem;
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+/* Текст muted / small внутри таблицы */
+.table .text-white-50,
+.table small,
+.table .text-muted {
+    color: rgba(255, 255, 255, 0.62) !important;
+}
+
+/* --- Bootstrap Theme Overrides --- */
+
+:root {
+    --bs-primary-rgb: 255, 165, 0; /* Соответствует --status-active-color */
+}
+
+/* Стилизация выпадающего списка Bootstrap под Glass-дизайн */
+.dropdown-item {
+    color: rgba(255,255,255,0.8);
+    font-size: 14px;
+    padding: 10px 15px;
+}
+
+.dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-primary);
+}
+
+.dropdown-divider {
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.progress-bar {
+    background-color: var(--status-active-color);
+}
+
+/* Элементы форм Bootstrap */
+.form-control,
+.form-select,
+textarea.form-control {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: white !important;
+    border-radius: 10px;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea.form-control:focus {
+    background-color: rgba(255, 255, 255, 0.09) !important;
+    border-color: var(--color-white) !important;
+    box-shadow: 0 0 0 3px rgba(var(--bs-white-rgb), 0.18),
+                0 0 12px rgba(var(--bs-white-rgb), 0.25);
+    outline: none;
+}
+
+.form-control::placeholder,
+.form-select option:disabled,
+textarea.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.38) !important;
+    opacity: 1;
+}
+
+.form-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='rgba(255,255,255,0.7)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 12px !important;
+    padding-right: 2.25rem !important;
+}
+
+.form-label {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.875rem;
+    margin-bottom: 0.45rem;
+    font-weight: 500;
+}
+
+.form-text,
+small.text-muted {
+    color: rgba(255, 255, 255, 0.45) !important;
+    font-size: 0.78rem;
+}
+
+.form-select option {
+    background: #1a1a40;
+    color: white;
+}
+
+.form-select option:checked,
+.form-select option[selected] {
+    background: var(--color-white);
+    color: #000;
+}
+
+/* Кнопки (Custom Glass Buttons) */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    -webkit-app-region: no-drag;
+}
+
+/* Основная кнопка (Primary - Orange) */
+.btn-primary {
+    --bs-btn-color: #000;
+    --bs-btn-bg: var(--status-active-color);
+    --bs-btn-border-color: var(--status-active-color);
+    --bs-btn-hover-color: #000;
+    --bs-btn-hover-bg: #ffb733; /* Чуть светлее оранжевого */
+    --bs-btn-hover-border-color: #ffb733;
+    --bs-btn-focus-shadow-rgb: var(--bs-primary-rgb);
+    --bs-btn-active-color: #000;
+    --bs-btn-active-bg: #e69500;
+    --bs-btn-active-border-color: #e69500;
+    --bs-btn-disabled-color: rgba(0, 0, 0, 0.5);
+    --bs-btn-disabled-bg: var(--status-active-color);
+    --bs-btn-disabled-border-color: var(--status-active-color);
+    opacity: 0.9;
+}
+
+.btn-primary:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--status-active-glow);
+}
+
+/* Вторичная кнопка (Secondary / Outline - Blue) */
+.btn-outline-primary {
+    --bs-btn-color: var(--status-pending-color);
+    --bs-btn-border-color: rgba(0, 212, 255, 0.4);
+    --bs-btn-hover-color: #000;
+    --bs-btn-hover-bg: var(--status-pending-color);
+    --bs-btn-hover-border-color: var(--status-pending-color);
+    --bs-btn-focus-shadow-rgb: 0, 212, 255;
+    --bs-btn-active-color: #000;
+    --bs-btn-active-bg: var(--status-pending-color);
+    --bs-btn-active-border-color: var(--status-pending-color);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Опасное действие (Danger) */
+.btn-danger {
+    --bs-btn-bg: var(--status-error-color);
+    --bs-btn-border-color: var(--status-error-color);
+    --bs-btn-hover-bg: #ff6666;
+    --bs-btn-hover-border-color: #ff6666;
+    --bs-btn-focus-shadow-rgb: 255, 77, 77;
+}
+
+/* Устранение горизонтального скролла от Bootstrap row */
+#file-list {
+    margin: 0 0 -1rem 0 !important;
+    width: 100% !important;
+}
+
+.file-card .spinner-border {
+    width: 2.5rem;
+    height: 2.5rem;
 }
