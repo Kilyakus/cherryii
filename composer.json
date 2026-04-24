@@ -32,6 +32,7 @@
         "bower-asset/fancybox": "2.1.5",
         "bower-asset/jquery.switcher": "*",
         "bower-asset/eonasdan-bootstrap-datetimepicker": "^4.7@dev",
+        "bower-asset/jquery": "2.1.4",
         "2amigos/yii2-selectize-widget": "~1.0"
     },
     "autoload": {
