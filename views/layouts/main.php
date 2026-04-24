@@ -98,7 +98,7 @@ $moduleName = $this->context->module->id;
         </aside>
 
         <section id="content" class="flex-grow-1 h-100 overflow-hidden">
-            <div id="file-list-container" class="h-100 overflow-y-auto py-4">
+            <div class="h-100 overflow-y-auto py-4">
                 
                 <div class="glass-panel p-4 min-vh-100">
                     <h2 class="text-white mb-4 fw-light opacity-75"><?= Html::encode($this->title) ?></h2>
