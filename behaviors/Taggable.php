@@ -70,7 +70,7 @@ class Taggable extends \yii\base\Behavior
                 $tag->frequency++;
                 if ($tag->save()) {
                     $updatedTags[] = $tag;
-                    $tagAssigns[] = [$modelClass, $this->owner->primaryKey[0], $tag->tag_id];
+                    $tagAssigns[] = [$modelClass, $this->owner->primaryKey, $tag->tag_id];
                 }
             }
 
