@@ -6,8 +6,8 @@ class DateTimePickerAsset extends \yii\web\AssetBundle
     public $sourcePath = '@bower';
     public $depends = [
         'yii\web\JqueryAsset',
-        'yii\bootstrap\BootstrapAsset',
-        'yii\bootstrap\BootstrapPluginAsset',
+        'yii\bootstrap5\BootstrapAsset',
+        'yii\bootstrap5\BootstrapPluginAsset',
     ];
 
     public function init()

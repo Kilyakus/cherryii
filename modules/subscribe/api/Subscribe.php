@@ -6,7 +6,7 @@ use yii\cherryii\modules\subscribe\models\Subscriber;
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /**
  * Subscribe module API

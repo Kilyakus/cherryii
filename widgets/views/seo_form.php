@@ -1,5 +1,5 @@
 <?php
-use yii\bootstrap\BootstrapPluginAsset;
+use yii\bootstrap5\BootstrapPluginAsset;
 use yii\helpers\Html;
 
 BootstrapPluginAsset::register($this);

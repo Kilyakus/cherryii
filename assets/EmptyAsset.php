@@ -8,6 +8,6 @@ class EmptyAsset extends \yii\web\AssetBundle
         'css/empty.css',
     ];
     public $depends = [
-        'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap5\BootstrapAsset',
     ];
 }

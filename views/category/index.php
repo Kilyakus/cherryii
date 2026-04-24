@@ -2,7 +2,7 @@
 use yii\cherryii\components\CategoryModel;
 use yii\helpers\Url;
 
-\yii\bootstrap\BootstrapPluginAsset::register($this);
+\yii\bootstrap5\BootstrapPluginAsset::register($this);
 
 $this->title = Yii::$app->getModule('admin')->activeModules[$this->context->module->id]->title;
 

@@ -61,7 +61,7 @@ class Carousel extends API
             $items[] = $temp;
         }
 
-        $widget = \yii\bootstrap\Carousel::widget([
+        $widget = \yii\bootstrap5\Carousel::widget([
             'options' => ['class' => 'slide'],
             'clientOptions' => $this->clientOptions,
             'items' => $items

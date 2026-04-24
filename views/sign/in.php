@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 $asset = \yii\cherryii\assets\EmptyAsset::register($this);
 $this->title = Yii::t('cherryii', 'Sign in');
