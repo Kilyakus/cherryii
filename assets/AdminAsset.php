@@ -14,6 +14,7 @@ class AdminAsset extends \yii\web\AssetBundle
         'yii\web\JqueryAsset',
         'yii\bootstrap5\BootstrapAsset',
         'yii\cherryii\assets\SwitcherAsset',
+        'kilyakus\webview\WebViewAsset',
     ];
     public $jsOptions = array(
         'position' => \yii\web\View::POS_HEAD

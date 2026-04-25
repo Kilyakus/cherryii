@@ -47,7 +47,7 @@ $moduleName = $this->context->module->id;
         
         <aside id="sidebar" class="h-100 py-4" style="width: 280px; min-width: 280px;">
             <div class="sidebar-inner glass-panel h-100 d-flex flex-column overflow-hidden">
-                <div class="flex-grow-1 overflow-y-auto p-3 d-flex flex-column gap-2" id="categories-scroll-area">
+                <div class="flex-grow-1 overflow-y-auto overflow-x-hidden p-3 d-flex flex-column gap-2" data-scrollview>
                     
                     <?php foreach(Yii::$app->getModule('admin')->activeModules as $module) : ?>
                         <a href="<?= Url::to(["/admin/$module->name"]) ?>" 
@@ -98,7 +98,7 @@ $moduleName = $this->context->module->id;
         </aside>
 
         <section id="content" class="flex-grow-1 h-100 overflow-hidden">
-            <div class="h-100 overflow-y-auto py-4">
+            <div class="h-100 overflow-y-auto overflow-x-hidden py-4" data-scrollview>
                 
                 <div class="glass-panel p-4 min-vh-100">
                     <h2 class="text-white mb-4 fw-light opacity-75"><?= Html::encode($this->title) ?></h2>
